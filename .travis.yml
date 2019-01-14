@@ -1,0 +1,13 @@
+language: ruby
+services:
+  - postgresql
+env:
+  - "RAILS_ENV=test"
+before_script:
+  - RAILS_ENV=test rake db:create db:migrate
+addons:
+  postgresql: "9.6"
+  code_climate:
+    repo_token: b019fc3621549aa26172a1a370337f3db17dc908ab529510300d03ff83ed2a44
+after_success:
+  - bundle exec codeclimate-test-reporter
