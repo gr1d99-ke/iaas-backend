@@ -19,8 +19,8 @@ RSpec.describe "Users", type: :request do
 
       it "returns user token in header" do
         post users_path, params: { user: user_params }
-        expect(response.headers.keys).to include("x-access-token")
-        expect(response.headers["x-access-token"]).not_to be_nil
+        expect(response.headers.keys).to include("X-Access-Token")
+        expect(response.headers["X-Access-Token"]).not_to be_nil
       end
     end
 

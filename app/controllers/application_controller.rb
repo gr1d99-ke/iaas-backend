@@ -13,7 +13,7 @@ class ApplicationController < ActionController::API
   end
 
   def attach_auth_token(token)
-    headers["x-access-token"] = token
+    headers["X-Access-Token"] = token
   end
 
   def render_resource(resource, status = :ok)
