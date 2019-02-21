@@ -1,0 +1,9 @@
+en:
+  errors:
+    users:
+      email:
+        presence: "Email can't be blank"
+        unique: "Email already exists"
+        invalid: "Email is not valid"
+      password:
+        presence: "Password can't be blank"

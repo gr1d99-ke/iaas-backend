@@ -1,14 +1,11 @@
 # frozen_string_literal: true
 
 class User < ActiveRecord::Base
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable,
-         :registerable,
-         :recoverable,
-         :rememberable,
-         :trackable,
-         :validatable
+  has_secure_password validations: false
 
-  include DeviseTokenAuth::Concerns::User
+  validates :email, presence: { message: I18n.t("errors.users.email.presence") }
+  validates :email, uniqueness: { message: I18n.t("errors.users.email.unique") }
+  validates :email, 'valid_email_2/email': { message: I18n.t("errors.users.email.invalid") }
+
+  validates :password, presence: { on: :create, message: I18n.t("errors.users.password.presence") }
 end

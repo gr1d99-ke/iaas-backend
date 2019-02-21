@@ -1,0 +1,11 @@
+en:
+  errors:
+    unprocessable_entity:
+      status: "422"
+      title: "Unprocessable entity"
+      detail: "One or more values failed to validate"
+    unauthorized:
+      status: "401"
+      title: "Unauthorized"
+      detail: "Authorization failed"
+      error_message: "Incorrect email or password"
