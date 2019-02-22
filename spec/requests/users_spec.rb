@@ -53,5 +53,12 @@ RSpec.describe "Users", type: :request do
         expect(json_response[:errors][:password]).to include(I18n.t("errors.users.password.presence"))
       end
     end
+
+    context "when request object is not wrapperd with required key" do
+      specify do
+        post users_path, params: { email: "user@email.com", password: "pass" }
+        expect(response).to have_http_status(400)
+      end
+    end
   end
 end

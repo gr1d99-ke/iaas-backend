@@ -1,5 +1,10 @@
 en:
   errors:
+    parameter_missing:
+      status: "400"
+      title: "Bad request"
+      detail: "The was unexpected error in the request, please try again"
+      error_message: "param is missing or the value is empty"
     unprocessable_entity:
       status: "422"
       title: "Unprocessable entity"

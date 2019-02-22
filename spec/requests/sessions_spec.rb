@@ -30,5 +30,12 @@ RSpec.describe "Sessions", type: :request do
         expect(response).to have_http_status(401)
       end
     end
+
+    context "when request object is not wrapperd with required key" do
+      specify do
+        post sessions_path, params: { email: "user@email.com", password: "pass" }
+        expect(response).to have_http_status(400)
+      end
+    end
   end
 end
