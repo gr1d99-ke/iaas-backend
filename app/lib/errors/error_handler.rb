@@ -9,7 +9,7 @@ module Errors
         param = parameter_missing_exception.param
         message = I18n.t("errors.parameter_missing.error_message")
         error = [
-            { "#{param}": [message] }
+          { "#{param}": [message] }
         ]
         parameter_missing!(error)
       end

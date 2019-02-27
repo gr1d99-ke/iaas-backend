@@ -10,7 +10,7 @@ class ApplicationController < ActionController::API
   end
 
   def generate_auth_token(user, password)
-    payload = { email: user.email }
+    payload = { email: user.email, role: user.role&.name }
     JwtToken::JwtToken.encode(payload, password)
   end
 

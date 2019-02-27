@@ -7,3 +7,7 @@ en:
         invalid: "Email is not valid"
       password:
         presence: "Password can't be blank"
+    roles:
+      name:
+        presence: "Role name can't be blank"
+        invalid: "%{value} is not a valid role name"
