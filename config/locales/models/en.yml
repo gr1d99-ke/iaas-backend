@@ -11,3 +11,19 @@ en:
       name:
         presence: "Role name can't be blank"
         invalid: "%{value} is not a valid role name"
+    openings:
+      title:
+        presence: "Title can't be blank"
+      company:
+        presence: "Company can't be blank"
+      location:
+        presence: "Location can't be blank"
+      description:
+        presence: "Description can't be blank"
+      qualifications:
+        presence: "Qualifications can't be blank"
+      start_date:
+        presence: "Start Date can't be blank"
+      end_date:
+        presence: "End Date can't be blank"
+        invalid: "End Date must be greater than Start Date"

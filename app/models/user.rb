@@ -6,6 +6,7 @@ class User < ActiveRecord::Base
   belongs_to :role,
              required: false,
              inverse_of: :users
+  has_many :openings
 
   validates :email, presence: { message: I18n.t("errors.users.email.presence") }
   validates :email, uniqueness: { message: I18n.t("errors.users.email.unique") }
