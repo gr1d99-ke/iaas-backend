@@ -1,19 +1,20 @@
 module JwtToken
   class JwtToken
     ALGORITHM = "HS256".freeze
+    SECRET = Rails.application.credentials.secret_key_base
 
     class << self
-      def encode(payload, secret)
+      def encode(payload)
         payload = add_claims(payload)
 
         JWT.encode(payload,
-                   secret,
+                   JwtToken::SECRET,
                    JwtToken::ALGORITHM)
       end
 
-      def decode(token, secret)
+      def decode(token)
         JWT.decode(token,
-                   secret,
+                   JwtToken::SECRET,
                    true,
                    algorithm: JwtToken::ALGORITHM)
       end

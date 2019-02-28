@@ -16,7 +16,7 @@ class SessionsController < ApplicationController
   end
 
   def provide_token
-    token = generate_auth_token(@user, session_params[:password])
+    token = generate_auth_token(@user)
     attach_auth_token(token)
   end
 end

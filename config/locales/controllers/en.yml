@@ -13,4 +13,11 @@ en:
       status: "401"
       title: "Unauthorized"
       detail: "Authorization failed"
+      error_message: "Please login with your email and password to continue"
+    invalid_credentials:
       error_message: "Incorrect email or password"
+    forbidden:
+      status: "403"
+      title: "Forbidden"
+      detail: "You are not authorized to invoke the operation"
+      error_message: "You don't have enough permission to perform requested operation, if this is a mistake kindly contact your system administrator"
