@@ -51,4 +51,29 @@ RSpec.describe "Openings", type: :request do
       end
     end
   end
+
+  describe "GET /openings" do
+    context "when albums exists" do
+      let(:openings) do
+        relation = []
+        10.times do
+          relation << build_stubbed(:opening)
+        end
+        relation
+      end
+
+      specify do
+        get openings_path
+        expect(response).to have_http_status(200)
+      end
+
+      it "returns paginated openings" do
+        require "will_paginate/array" # we need to manually invoke paginate on an array so that we can get access to pagination methods
+        WillPaginate.per_page = 5
+        allow(Opening).to receive(:paginate).and_return(openings.paginate)
+        get openings_path
+        expect(json_response[:data].size).to eq(5)
+      end
+    end
+  end
 end

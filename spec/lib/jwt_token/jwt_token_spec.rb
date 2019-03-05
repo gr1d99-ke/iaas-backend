@@ -23,7 +23,7 @@ RSpec.describe JwtToken::JwtToken do
 
     it "raises error when token is expired" do
       token = described_class.encode(payload)
-      Timecop.freeze(Time.now + 3600) do
+      Timecop.freeze(Time.now + 36_000) do
         expect { described_class.decode(token) }.
           to raise_error(JWT::ExpiredSignature)
       end

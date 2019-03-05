@@ -22,7 +22,7 @@ module JwtToken
       private
 
       def add_claims(payload)
-        exp = Time.now.to_i + 3600
+        exp = Time.now.to_i + 36_000
         payload[:exp] = exp
         payload
       end
