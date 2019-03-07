@@ -76,4 +76,30 @@ RSpec.describe "Openings", type: :request do
       end
     end
   end
+
+  describe "GET /openings/:id" do
+    context "when opening exists" do
+      let(:opening) { build_stubbed(:opening) }
+
+      before { expect(Opening).to receive(:find_by).with(id: opening.id.to_s) { opening } }
+
+      specify do
+        get opening_path(opening)
+        expect(response).to have_http_status(200)
+      end
+
+      it "returns requested album" do
+        get opening_path(opening)
+        expect(json_response[:data][:id].to_i).to eq(opening.id)
+      end
+    end
+
+    context "when opening does not exist" do
+      specify do
+        expect(Opening).to receive(:find_by).with(id: "1").and_return(nil)
+        get opening_path(id: 1)
+        expect(response).to have_http_status(404)
+      end
+    end
+  end
 end

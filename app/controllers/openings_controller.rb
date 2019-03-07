@@ -21,6 +21,15 @@ class OpeningsController < ApplicationController
     end
   end
 
+  def show
+    opening = Opening.find_by(id: params[:id])
+    if opening
+      render json: opening
+    else
+      render json: {}, status: :not_found
+    end
+  end
+
   private
 
   def opening_params
