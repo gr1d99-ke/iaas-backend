@@ -19,6 +19,7 @@ gem 'valid_email2'
 group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'factory_bot_rails'
+  gem 'faker'
   gem 'guard-rspec', require: false
   gem 'pry-rails'
   gem 'rspec-rails'
@@ -32,7 +33,6 @@ group :development do
 end
 
 group :test do
-  gem 'faker'
   gem 'shoulda-matchers'
   gem 'simplecov', require: false
   gem 'timecop'

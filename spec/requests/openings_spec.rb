@@ -70,9 +70,16 @@ RSpec.describe "Openings", type: :request do
       it "returns paginated openings" do
         require "will_paginate/array" # we need to manually invoke paginate on an array so that we can get access to pagination methods
         WillPaginate.per_page = 5
-        allow(Opening).to receive(:paginate).and_return(openings.paginate)
+        expect(Opening).to receive(:order).with(created_at: 'desc') { openings }
+        expect(openings).to receive(:paginate).and_return(openings.paginate)
         get openings_path
         expect(json_response[:data].size).to eq(5)
+      end
+
+      it 'orders by last created opening' do
+        create_list(:opening, 2)
+        get openings_path
+        expect(json_response[:data][0][:id]).to eq(Opening.last.id.to_s)
       end
     end
   end

@@ -6,7 +6,7 @@ class OpeningsController < ApplicationController
 
   def index
     page, per_page = pagination_params
-    openings = Opening.paginate(page: page, per_page: per_page)
+    openings = Opening.order(created_at: 'desc').paginate(page: page, per_page: per_page)
     render json: openings, meta: pagination_dict(openings)
   end
 
