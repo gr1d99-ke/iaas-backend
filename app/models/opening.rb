@@ -20,8 +20,4 @@ class Opening < ApplicationRecord
             presence: { message: I18n.t("errors.openings.end_date.presence") }
   validates :end_date,
             valid_end_date: { message: I18n.t("errors.openings.end_date.invalid") }
-
-  def open
-    end_date >= start_date
-  end
 end
