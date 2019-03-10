@@ -43,12 +43,13 @@ RSpec.describe "Openings", type: :request do
     end
 
     context "when user is not an admin" do
-      it "responds with 403" do
+      before do
         user = create(:user)
         stub_user(user)
         post openings_path, params: { openings: attributes_for(:opening) }
-        expect(response).to have_http_status(403)
       end
+
+      it_behaves_like "non admin"
     end
   end
 
@@ -107,6 +108,110 @@ RSpec.describe "Openings", type: :request do
         get opening_path(id: 1)
         expect(response).to have_http_status(404)
       end
+    end
+  end
+
+  describe "PUT /openings/:id" do
+    context "when admin can only edit allowed attributes" do
+      let(:opening) { create(:opening) }
+      let(:new_title) { "new title" }
+      let(:new_company) { "new company" }
+      let(:new_location) { "new location" }
+      let(:new_description) { "new description" }
+      let(:new_qualifications) { "new qualifications" }
+      let(:new_start_date)  { DateTime.now }
+      let(:new_end_date) { DateTime.now.advance(months: 10) }
+      let(:attributes) { opening.attributes.dup }
+
+      before do
+        # remove attributes that should not be updated
+        attributes.delete("id")
+        attributes.delete("user_id")
+        attributes.delete("start_date")
+        attributes.delete("end_date")
+
+        # update attributes that we want to update
+        attributes["title"] = new_title
+        attributes["company"] = new_company
+        attributes["location"] = new_location
+        attributes["description"] = new_description
+        attributes["qualifications"] = new_qualifications
+        attributes["start_date"] = new_start_date
+        attributes["end_date"] = new_end_date
+      end
+
+      specify do
+        admin = create(:admin)
+        stub_user(admin)
+        put opening_path(opening), params: { openings: attributes }
+        expect(response).to have_http_status(200)
+      end
+
+      it "updates submitted attributes" do
+        admin = create(:admin)
+        stub_user(admin)
+        put opening_path(opening), params: { openings: attributes }
+        updated_opening = json_response[:data][:attributes]
+        expect(updated_opening[:title]).to match(new_title)
+        expect(updated_opening[:company]).to match(new_company)
+        expect(updated_opening[:location]).to match(new_location)
+        expect(updated_opening[:description]).to match(new_description)
+        expect(updated_opening[:qualifications]).to match(new_qualifications)
+      end
+
+      it "does not update start_date and end_date if it breaks validations" do
+        admin = create(:admin)
+        stub_user(admin)
+        attributes = { end_date: DateTime.now.advance(months: -100) }
+        put opening_path(opening), params: { openings: attributes }
+        expect(response).to have_http_status(422)
+        expect(json_response[:errors][:end_date]).to match_array([I18n.t("errors.openings.end_date.invalid")])
+      end
+
+      it "returns 404 when opening does not exist" do
+        admin = create(:admin)
+        stub_user(admin)
+        put opening_path(12345678909876543), params: { openings: {}}
+        expect(response).to have_http_status(404)
+      end
+
+      context "when user is not an admin" do
+        before do
+          user = create(:user)
+          stub_user(user)
+          put opening_path(id: 122)
+        end
+
+        it_behaves_like "non admin"
+      end
+    end
+  end
+
+  describe "DELETE /openings/:id" do
+    it "deletes an opening when it exists" do
+      admin = create(:admin)
+      stub_user(admin)
+      opening = create(:opening)
+      delete opening_path(opening)
+      expect(response).to have_http_status(204)
+      expect(Opening.count).to be_zero
+    end
+
+    it "returns 404 when an opening does not exist" do
+      admin = create(:admin)
+      stub_user(admin)
+      delete opening_path(id: 122)
+      expect(response).to have_http_status(404)
+    end
+
+    context "when user is not an admin" do
+      before do
+        user = create(:user)
+        stub_user(user)
+        delete opening_path(id: 122)
+      end
+
+      it_behaves_like "non admin"
     end
   end
 end

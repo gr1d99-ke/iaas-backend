@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class OpeningsController < ApplicationController
-  before_action :must_be_logged_in!, only: %i[create]
-  before_action :must_be_admin!, only: %i[create]
+  before_action :must_be_logged_in!, only: %i[create update destroy]
+  before_action :must_be_admin!, only: %i[create update destroy]
 
   def index
     page, per_page = pagination_params
@@ -11,7 +11,7 @@ class OpeningsController < ApplicationController
   end
 
   def create
-    opening = Opening.new(opening_params)
+    opening = Opening.new(new_opening_params)
     opening.save
 
     if opening.valid?
@@ -24,7 +24,31 @@ class OpeningsController < ApplicationController
   def show
     opening = Opening.find_by(id: params[:id])
     if opening
-      render json: opening
+      render_resource(opening)
+    else
+      render json: {}, status: :not_found
+    end
+  end
+
+  def update
+    opening = Opening.find_by(id: params[:id])
+
+    if opening
+      if opening.update(update_opening_params)
+        render_resource(opening)
+      else
+        resource_invalid!(opening)
+      end
+    else
+      render json: {}, status: :not_found
+    end
+  end
+
+  def destroy
+    opening = Opening.find_by(id: params[:id])
+
+    if opening
+      opening.destroy
     else
       render json: {}, status: :not_found
     end
@@ -32,7 +56,7 @@ class OpeningsController < ApplicationController
 
   private
 
-  def opening_params
+  def new_opening_params
     params.require(:openings).permit(:title,
                                      :company,
                                      :location,
@@ -40,6 +64,16 @@ class OpeningsController < ApplicationController
                                      :qualifications,
                                      :start_date,
                                      :end_date).reverse_merge!(user_id: @current_user.id)
+  end
+
+  def update_opening_params
+    params.require(:openings).permit(:title,
+                                     :company,
+                                     :location,
+                                     :description,
+                                     :qualifications,
+                                     :start_date,
+                                     :end_date)
   end
 
   def pagination_params
