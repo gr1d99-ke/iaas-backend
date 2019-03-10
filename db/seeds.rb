@@ -11,8 +11,6 @@ require "faker"
 # role
 admin_role = Role.find_or_create_by(name: "admin")
 
-# user
-
 # check if user exists
 admin_email = "admin@email.com"
 non_admin_email = "non-admin@email.com"
