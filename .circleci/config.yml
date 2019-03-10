@@ -1,6 +1,6 @@
 docker: &docker
   docker:
-  - image: circleci/ruby:2.5.1-strech
+  - image: circleci/ruby:2.5.1-stretch
     environment:
       BUNDLE_JOBS: 5
       BUNDLE_RETRY: 3
