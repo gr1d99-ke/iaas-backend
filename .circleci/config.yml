@@ -93,16 +93,6 @@ jobs:
     - *wait_for_db
     - *create_database
     - *run_tests
-    - run: bash .circleci/setup-heroku.sh
-    - add_ssh_keys:
-        fingerprints:
-          - $HEROKU_SSH_FINGERPRINT
-    - deploy:
-        name: Deploy to Heroku if tests pass and branch is master
-        command: |
-          if [ "${CIRCLE_BRANCH}" == "setup-ci" ]; then
-            git push --force git@heroku.com:$HEROKU_APP_NAME.git HEAD:refs/heads/master
-          fi
 
   deploy:
     docker:
@@ -122,9 +112,9 @@ workflows:
     - tests:
         requires:
         - build
-#    - deploy:
-#        requires:
-#        - tests
-#        filters:
-#          branches:
-#            only: setup-ci
+    - deploy:
+        requires:
+        - tests
+        filters:
+          branches:
+            only: setup-ci
