@@ -9,15 +9,15 @@
 #   Character.create(name: 'Luke', movie: movies.first)
 
 # role
-admin_role = Role.create(name: 'admin')
+admin_role = Role.find_or_create_by(name: 'admin')
 
 # user
-admin = User.create(email: 'admin@email.com', password: 'admin', role: admin_role)
-User.create(email: 'non-admin@email.com', password: 'admin')
+admin = User.find_or_create_by(email: 'admin@email.com', password: 'password', role: admin_role)
+User.find_or_create_by(email: 'non-admin@email.com', password: 'password')
 
 # open Openings
 
-5.times do |i|
+9.times do |i|
   date = DateTime.now
 
   start_date = date.advance(days: 30)
