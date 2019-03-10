@@ -93,6 +93,10 @@ jobs:
     - *wait_for_db
     - *create_database
     - *run_tests
+    - run: bash .circleci/setup-heroku.sh
+    - add_ssh_keys:
+        fingerprints:
+          - $HEROKU_SSH_FINGERPRINT
 
   deploy:
     docker:
@@ -112,9 +116,9 @@ workflows:
     - tests:
         requires:
         - build
-    - deploy:
-        requires:
-        - tests
-        filters:
-          branches:
-            only: setup-ci
+#    - deploy:
+#        requires:
+#        - tests
+#        filters:
+#          branches:
+#            only: setup-ci
