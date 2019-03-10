@@ -97,6 +97,12 @@ jobs:
     - add_ssh_keys:
         fingerprints:
           - $HEROKU_SSH_FINGERPRINT
+    - deploy:
+        name: Deploy to Heroku if tests pass and branch is master
+        command: |
+          if [ "${CIRCLE_BRANCH}" == "setup-ci" ]; then
+            git push --force git@heroku.com:$HEROKU_APP_NAME.git HEAD:refs/heads/master
+          fi
 
   deploy:
     docker:
