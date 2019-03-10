@@ -12,8 +12,15 @@
 admin_role = Role.find_or_create_by(name: 'admin')
 
 # user
-admin = User.find_or_create_by(email: 'admin@email.com', password: 'password', role: admin_role)
-User.find_or_create_by(email: 'non-admin@email.com', password: 'password')
+
+# check if user exists
+admin_email = 'admin@email.com'
+non_admin_email = 'non-admin@email.com'
+admin = User.find_by(email: admin_email)
+non_admin = User.find_by(email: non_admin_email)
+
+User.create(email: 'admin@email.com', password: 'password', role: admin_role) unless admin
+User.create(email: 'non-admin@email.com', password: 'password') unless non_admin
 
 # open Openings
 

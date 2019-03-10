@@ -1,0 +1,18 @@
+#!/usr/bin/env ruby
+require 'fileutils'
+include FileUtils
+
+# path to your application root.
+APP_ROOT = File.expand_path('..', __dir__)
+
+def system!(*args)
+  system(*args) || abort("\n== Command #{args} failed ==")
+end
+
+chdir APP_ROOT do
+  puts "\n== Running migrations =="
+  system! 'bin/rails db:migrate'
+
+  puts "\n== Seeding Data =="
+  system! 'bin/rails db:seed'
+end
