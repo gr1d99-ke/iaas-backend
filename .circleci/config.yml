@@ -1,0 +1,120 @@
+docker: &docker
+  docker:
+  - image: circleci/ruby:2.5.1-stretch
+    environment:
+      BUNDLE_JOBS: 3
+      BUNDLE_RETRY: 3
+      BUNDLE_PATH: vendor/bundle
+      CC_TEST_REPORTER_ID: $CC_TEST_REPORTER_ID
+      PGHOST: 127.0.0.1
+      PGUSER: iaas_backend
+      RAILS_ENV: test
+
+  - image: circleci/postgres:9.4-alpine
+    environment:
+      POSTGRES_USER: iaas_backend
+      POSTGRES_DB: iaas_backend_test
+      POSTGRES_PASSWORD: ''
+
+setup_cc_test_reporter: &setup_cc_test_reporter
+  run:
+    name: "Setup codeclimate test reporter"
+    command: |
+      curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+      chmod +x ./cc-test-reporter
+
+bundler_version: &bundler_version
+  run:
+    name: "Which bundler?"
+    command: bundle -v
+
+restore_cache: &restore_cache
+  restore_cache:
+    keys:
+    - iaas_backend-bundle-{{ checksum "Gemfile.lock" }}
+    - iaas_backend-bundle-
+
+install_dependencies: &install_dependencies
+  run:
+    name: "Bundle install"
+    command: bundle check || bundle install
+
+save_cache: &save_cache
+  save_cache:
+    key: iaas_backend-bundle-{{ checksum "Gemfile.lock" }}
+    paths:
+    - vendor/bundle
+
+wait_for_db: &wait_for_db
+  run:
+    name: Wait for DB
+    command: dockerize -wait tcp://localhost:5432 -timeout 1m
+
+create_database: &create_database
+  run:
+    name: Database setup
+    command: |
+      bundle exec rake db:create db:schema:load --trace
+
+run_tests: &run_tests
+  run:
+    name: Run rspec
+    command: |
+      bundle exec rspec -fd
+      ./cc-test-reporter before-build
+      ./cc-test-reporter after-build --exit-code $?
+
+version: 2
+jobs:
+  build:
+    working_directory: ~/iaas_backend
+    parallelism: 2
+    <<: *docker
+    steps:
+    - checkout
+    - *setup_cc_test_reporter
+    - *bundler_version
+    - *restore_cache
+    - *install_dependencies
+    - *save_cache
+    - *wait_for_db
+    - *create_database
+
+  tests:
+    working_directory: ~/iaas_backend
+    <<: *docker
+    steps:
+    - checkout
+    - *setup_cc_test_reporter
+    - *bundler_version
+    - *restore_cache
+    - *install_dependencies
+    - *save_cache
+    - *wait_for_db
+    - *create_database
+    - *run_tests
+
+  deploy:
+    docker:
+    - image: buildpack-deps:trusty
+    steps:
+    - checkout
+    - run:
+        name: Deploy to staging
+        command: |
+          git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git master:master --force
+
+workflows:
+  version: 2
+  build-test-deploy:
+    jobs:
+    - build
+    - tests:
+        requires:
+        - build
+    - deploy:
+        requires:
+        - tests
+        filters:
+          branches:
+            only: master
