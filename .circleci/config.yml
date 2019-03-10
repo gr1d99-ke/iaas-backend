@@ -67,7 +67,7 @@ run_tests: &run_tests
 version: 2
 jobs:
   build:
-    working_directory: ~/[directory]
+    working_directory: ~/iaas_backend
     parallelism: 2
     <<: *docker
     steps:
@@ -102,7 +102,7 @@ jobs:
     - run:
         name: Deploy to staging
         command: |
-          git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git [branch_name]:master --force
+          git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git setup-ci:master --force
 
 workflows:
   version: 2
