@@ -60,8 +60,8 @@ run_tests: &run_tests
   run:
     name: Run rspec
     command: |
-      bundle exec rspec -fd
       ./cc-test-reporter before-build
+      bundle exec rspec -fd
       ./cc-test-reporter after-build --exit-code $?
 
 version: 2

@@ -7,6 +7,7 @@ class User < ActiveRecord::Base
              required: false,
              inverse_of: :users
   has_many :openings
+  has_many :applications
 
   validates :email, presence: { message: I18n.t("errors.users.email.presence") }
   validates :email, uniqueness: { message: I18n.t("errors.users.email.unique") }

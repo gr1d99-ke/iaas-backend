@@ -27,3 +27,6 @@ en:
       end_date:
         presence: "End Date can't be blank"
         invalid: "End Date must be greater than Start Date"
+    application:
+      applicant:
+        presence: "Applicant must exist"
