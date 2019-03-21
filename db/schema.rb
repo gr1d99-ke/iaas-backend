@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_11_090922) do
+ActiveRecord::Schema.define(version: 2019_03_20_170408) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -40,6 +40,10 @@ ActiveRecord::Schema.define(version: 2019_03_11_090922) do
     t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "cover_letter_data"
+    t.bigint "opening_id"
+    t.text "resume_data"
+    t.index ["opening_id"], name: "index_applications_on_opening_id"
     t.index ["user_id"], name: "index_applications_on_user_id"
   end
 
@@ -74,6 +78,7 @@ ActiveRecord::Schema.define(version: 2019_03_11_090922) do
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "applications", "openings"
   add_foreign_key "applications", "users"
   add_foreign_key "openings", "users"
   add_foreign_key "users", "roles"

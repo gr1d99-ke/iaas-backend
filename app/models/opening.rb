@@ -4,6 +4,8 @@ class Opening < ApplicationRecord
   belongs_to :user,
              required: false
 
+  has_many :applications
+
   validates :title,
             presence: { message: I18n.t("errors.openings.title.presence") }
   validates :company,
