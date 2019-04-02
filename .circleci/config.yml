@@ -26,7 +26,11 @@ setup_cc_test_reporter: &setup_cc_test_reporter
 bundler_version: &bundler_version
   run:
     name: "Which bundler?"
-    command: bundle -v
+    command: |
+      bundle -v
+      echo 'export BUNDLER_VERSION=$(cat Gemfile.lock | tail -1 | tr -d " ")' >> $BASH_ENV
+      source $BASH_ENV
+      gem install bundler
 
 restore_cache: &restore_cache
   restore_cache:
