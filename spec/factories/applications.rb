@@ -1,5 +1,6 @@
 FactoryBot.define do
   factory :application do
-    user { nil }
+    association :applicant, factory: :user
+    opening
   end
 end

@@ -208,6 +208,8 @@ GEM
     shrine (2.16.0)
       content_disposition (~> 1.0)
       down (~> 4.1)
+    shrine-memory (0.3.0)
+      shrine (~> 2.2)
     simplecov (0.16.1)
       docile (~> 1.1)
       json (>= 1.8, < 3)
@@ -263,6 +265,7 @@ DEPENDENCIES
   rubocop
   shoulda-matchers
   shrine
+  shrine-memory
   simplecov
   spring
   spring-watcher-listen (~> 2.0.0)

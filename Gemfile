@@ -39,6 +39,7 @@ group :test do
   gem 'shoulda-matchers'
   gem 'simplecov', require: false
   gem 'timecop'
+  gem 'shrine-memory'
 end
 
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]

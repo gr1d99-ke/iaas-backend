@@ -7,3 +7,9 @@ RSpec.shared_examples "non admin" do
     expect(response).to have_http_status(403)
   end
 end
+
+RSpec.shared_examples "unauthenticated user" do
+  it "returns status code 401" do
+    expect(response).to have_http_status(401)
+  end
+end
