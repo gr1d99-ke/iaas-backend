@@ -30,3 +30,7 @@ en:
     application:
       applicant:
         presence: "Applicant must exist"
+      cover_letter:
+        presence: "Cover letter can't be blank"
+      resume:
+        presence: "Resume can't be blank"

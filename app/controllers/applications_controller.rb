@@ -1,5 +1,6 @@
 class ApplicationsController < ApplicationController
   before_action :must_be_logged_in!, only: :create
+
   def create
     application = Application.new(application_params)
     application.resume = attachment_data["resume_data"]
