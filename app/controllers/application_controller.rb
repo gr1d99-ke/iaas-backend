@@ -1,9 +1,14 @@
 class ApplicationController < ActionController::API
+  around_action :init_time_zone
   before_action :set_locale
 
   include Errors::ErrorHandler
 
   private
+
+  def init_time_zone(&block)
+    Time.use_zone('Africa/Nairobi', &block)
+  end
 
   def set_locale
     I18n.locale = params[:locale] || I18n.default_locale
