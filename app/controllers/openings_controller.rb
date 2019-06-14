@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+require "will_paginate/array"
 
 class OpeningsController < ApplicationController
   before_action :must_be_logged_in!, only: %i[create update destroy]
@@ -6,8 +7,16 @@ class OpeningsController < ApplicationController
 
   def index
     page, per_page = pagination_params
-    openings = Opening.order(created_at: 'desc').paginate(page: page, per_page: per_page)
-    render json: openings, meta: pagination_dict(openings)
+    openings = RedisService.get("openings")
+    if openings.nil?
+      openings = Opening.order(created_at: 'desc').to_json
+      RedisService.set("openings", openings)
+    end
+
+    openings = JSON.parse(openings)
+    openings = openings.paginate(page: page, per_page: per_page)
+
+    render json: openings, each_serializer: OpeningSerializer, meta: pagination_dict(openings)
   end
 
   def create

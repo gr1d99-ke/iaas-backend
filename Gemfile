@@ -17,6 +17,10 @@ gem 'puma', '~> 3.11'
 gem 'rack-cors', require: 'rack/cors'
 gem 'rails', '~> 5.2.2'
 gem 'rb-readline'
+gem 'redis'
+gem 'redis-namespace'
+gem 'redis-rails'
+
 gem 'shrine'
 gem 'valid_email2'
 
