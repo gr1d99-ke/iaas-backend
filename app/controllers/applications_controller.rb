@@ -2,8 +2,8 @@ class ApplicationsController < ApplicationController
   before_action :must_be_logged_in!, only: :create
 
   def create
-    application = Application.new(application_params)
-    application.resume = attachment_data["resume_data"]
+    application              = Application.new(application_params)
+    application.resume       = attachment_data["resume_data"]
     application.cover_letter = attachment_data["cover_letter_data"]
 
     if application.valid?

@@ -12,8 +12,9 @@ class OpeningSerializer < ActiveModel::Serializer
              :start_date,
              :end_date
 
-  def open
-    object.end_date >= object.start_date
+
+  attribute :open do
+    object["end_date"].to_date >= object["start_date"].to_date
   end
 
   def start_date
