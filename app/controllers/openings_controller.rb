@@ -76,7 +76,7 @@ class OpeningsController < ApplicationController
   end
 
   def update_opening_params
-    params.require(:openings).permit(:title,
+    params.require(:opening).permit(:title,
                                      :company,
                                      :location,
                                      :description,

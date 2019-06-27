@@ -3,14 +3,14 @@ en:
     users:
       email:
         presence: "Email can't be blank"
-        unique: "Email already exists"
-        invalid: "Email is not valid"
+        unique:   "Email already exists"
+        invalid:  "Email is not valid"
       password:
         presence: "Password can't be blank"
     roles:
       name:
         presence: "Role name can't be blank"
-        invalid: "%{value} is not a valid role name"
+        invalid:  "%{value} is not a valid role name"
     openings:
       title:
         presence: "Title can't be blank"
@@ -26,10 +26,11 @@ en:
         presence: "Start Date can't be blank"
       end_date:
         presence: "End Date can't be blank"
-        invalid: "End Date must be greater than Start Date"
+        invalid:  "End Date must be greater than Start Date"
     application:
       applicant:
-        presence: "Applicant must exist"
+        presence:   "Applicant must exist"
+        apply_once: "You can only apply once"
       cover_letter:
         presence: "Cover letter can't be blank"
       resume:

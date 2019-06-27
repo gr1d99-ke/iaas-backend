@@ -13,10 +13,10 @@ RSpec.describe "Applications" do
     end
 
     context "when all required attributes are provided" do
+      let(:user)    { FactoryBot.create(:user) }
       let(:opening) { FactoryBot.create(:opening) }
 
       before do
-        user = FactoryBot.create(:user)
         stub_user(user)
       end
 
@@ -36,6 +36,30 @@ RSpec.describe "Applications" do
         expect(opening.applications.size).to eq(1)
         expect(opening.applications[0].cover_letter).not_to be_nil
         expect(opening.applications[0].resume).not_to be_nil
+      end
+
+      context "when user applies twice for the same opening" do
+        before do
+          FactoryBot.create(:application, applicant: user, opening: opening)
+
+          cover_letter = Rack::Test::UploadedFile.new("spec/files/cover_letters/valid/1.pdf", "application/pdf")
+          resume = Rack::Test::UploadedFile.new("spec/files/resumes/valid/1.pdf", "application/pdf")
+
+          post "/applications/cover-letter/upload", params: { file: cover_letter }
+          cover_letter_data = json_response.to_json
+
+          post "/applications/resume/upload", params: { file: resume }
+          resume_data = json_response.to_json
+
+          post opening_applications_path(opening), params: { application: { cover_letter_data: cover_letter_data, resume_data: resume_data } }
+        end
+
+        it_behaves_like "unprocessable entity"
+
+        it "returns error message" do
+          error_message = I18n.t("errors.application.applicant.apply_once")
+          expect(json_response[:errors][:user]).to include(error_message)
+        end
       end
     end
 
