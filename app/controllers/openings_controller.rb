@@ -66,7 +66,7 @@ class OpeningsController < ApplicationController
   private
 
   def new_opening_params
-    params.require(:openings).permit(:title,
+    params.require(:opening).permit(:title,
                                      :company,
                                      :location,
                                      :description,
