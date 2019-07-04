@@ -16,6 +16,8 @@ docker: &docker
       POSTGRES_DB: iaas_backend_test
       POSTGRES_PASSWORD: ''
 
+  - image: redis
+
 setup_cc_test_reporter: &setup_cc_test_reporter
   run:
     name: "Setup codeclimate test reporter"
