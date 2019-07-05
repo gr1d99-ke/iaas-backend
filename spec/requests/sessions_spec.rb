@@ -13,7 +13,7 @@ RSpec.describe "Sessions", type: :request do
       before { create(:user, email: email, password: password) }
 
       it "returns auth token in header" do
-        post sessions_path, params: { sessions: valid_params }
+        post sessions_path, params: { session: valid_params }
         expect(response.headers.keys).to include("X-Access-Token")
         expect(response.headers["X-Access-Token"]).not_to be_nil
       end
@@ -21,12 +21,12 @@ RSpec.describe "Sessions", type: :request do
 
     context "when email is not registered" do
       it "returns error message" do
-        post sessions_path, params: { sessions: { email: "user@domain.com", password: "1234" } }
+        post sessions_path, params: { session: { email: "user@domain.com", password: "1234" } }
         expect(json_response[:errors]).to include(I18n.t("errors.unauthorized.error_message"))
       end
 
       specify do
-        post sessions_path, params: { sessions: { email: "user@domain.com", password: "1234" } }
+        post sessions_path, params: { session: { email: "user@domain.com", password: "1234" } }
         expect(response).to have_http_status(401)
       end
     end

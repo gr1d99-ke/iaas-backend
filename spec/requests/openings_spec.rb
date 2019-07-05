@@ -10,19 +10,19 @@ RSpec.describe "Openings", type: :request do
       context "when params are valid" do
         it "responds with 200" do
           stub_user(admin)
-          post openings_path, params: { openings: attributes_for(:opening) }
+          post openings_path, params: { opening: attributes_for(:opening) }
           expect(response).to have_http_status(200)
         end
 
         it "creates opening" do
           stub_user(admin)
-          expect { post openings_path, params: { openings: attributes_for(:opening) } }.to change { Opening.count }.by(1)
+          expect { post openings_path, params: { opening: attributes_for(:opening) } }.to change { Opening.count }.by(1)
         end
 
         it "tracks admin as the creator" do
           stub_user(admin)
           expect(Opening.count).to be(0)
-          post openings_path, params: { openings: attributes_for(:opening) }
+          post openings_path, params: { opening: attributes_for(:opening) }
           expect(Opening.first.user).to be_eql(admin)
         end
       end
@@ -33,7 +33,7 @@ RSpec.describe "Openings", type: :request do
           attributes = attributes_for(:opening)
           attributes.delete(:start_date)
           attributes.delete(:end_date)
-          post openings_path, params: { openings: attributes }
+          post openings_path, params: { opening: attributes }
         end
 
         it "responds with 422" do
@@ -46,7 +46,7 @@ RSpec.describe "Openings", type: :request do
       before do
         user = create(:user)
         stub_user(user)
-        post openings_path, params: { openings: attributes_for(:opening) }
+        post openings_path, params: { opening: attributes_for(:opening) }
       end
 
       it_behaves_like "non admin"
@@ -55,14 +55,6 @@ RSpec.describe "Openings", type: :request do
 
   describe "GET /openings" do
     context "when albums exists" do
-      let(:openings) do
-        relation = []
-        10.times do
-          relation << build_stubbed(:opening)
-        end
-        relation
-      end
-
       specify do
         get openings_path
         expect(response).to have_http_status(200)
@@ -70,9 +62,8 @@ RSpec.describe "Openings", type: :request do
 
       it "returns paginated openings" do
         require "will_paginate/array" # we need to manually invoke paginate on an array so that we can get access to pagination methods
+        create_list(:opening, 10)
         WillPaginate.per_page = 5
-        expect(Opening).to receive(:order).with(created_at: 'desc') { openings }
-        expect(openings).to receive(:paginate).and_return(openings.paginate)
         get openings_path
         expect(json_response[:data].size).to eq(5)
       end
@@ -143,14 +134,14 @@ RSpec.describe "Openings", type: :request do
       specify do
         admin = create(:admin)
         stub_user(admin)
-        put opening_path(opening), params: { openings: attributes }
+        put opening_path(opening), params: { opening: attributes }
         expect(response).to have_http_status(200)
       end
 
       it "updates submitted attributes" do
         admin = create(:admin)
         stub_user(admin)
-        put opening_path(opening), params: { openings: attributes }
+        put opening_path(opening), params: { opening: attributes }
         updated_opening = json_response[:data][:attributes]
         expect(updated_opening[:title]).to match(new_title)
         expect(updated_opening[:company]).to match(new_company)
@@ -163,7 +154,7 @@ RSpec.describe "Openings", type: :request do
         admin = create(:admin)
         stub_user(admin)
         attributes = { end_date: DateTime.now.advance(months: -100) }
-        put opening_path(opening), params: { openings: attributes }
+        put opening_path(opening), params: { opening: attributes }
         expect(response).to have_http_status(422)
         expect(json_response[:errors][:end_date]).to match_array([I18n.t("errors.openings.end_date.invalid")])
       end
@@ -171,7 +162,7 @@ RSpec.describe "Openings", type: :request do
       it "returns 404 when opening does not exist" do
         admin = create(:admin)
         stub_user(admin)
-        put opening_path(12345678909876543), params: { openings: {}}
+        put opening_path(12345678909876543), params: { opening: {}}
         expect(response).to have_http_status(404)
       end
 
