@@ -3,12 +3,12 @@ require "will_paginate/array"
 
 class OpeningsController < ApplicationController
   before_action :must_be_logged_in!, only: %i[create update destroy]
-  before_action :must_be_admin!, only: %i[create update destroy]
+  before_action :optional_login,     only: %i[index]
+  before_action :must_be_admin!,     only: %i[create update destroy]
 
   def index
     page, per_page = pagination_params
-    openings       = Opening.order(created_at: 'desc').paginate(page: page, per_page: per_page)
-
+    openings       = current_user_or_model.order(created_at: 'desc').paginate(page: page, per_page: per_page)
     render json: openings, meta: pagination_dict(openings)
   end
 
@@ -82,5 +82,9 @@ class OpeningsController < ApplicationController
     page             = params[:page] && params[:page][:number] || 1
     per_page         = params[:page] && params[:page][:size] || WillPaginate.per_page
     [page, per_page]
+  end
+
+  def current_user_or_model
+    @current_user&.openings || Opening
   end
 end

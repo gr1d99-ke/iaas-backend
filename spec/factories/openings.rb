@@ -7,5 +7,6 @@ FactoryBot.define do
     qualifications { Faker::Lorem.unique.paragraph }
     start_date { DateTime.tomorrow }
     end_date { DateTime.tomorrow.advance(months: 3) }
+    association(:user, factory: :admin)
   end
 end

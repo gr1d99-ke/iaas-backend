@@ -24,13 +24,6 @@ class ApplicationController < ActionController::API
   end
 
   def must_be_logged_in!
-    payload_opts =
-      begin
-        JwtToken::JwtToken.decode(request.headers[access_header])
-      rescue JWT::DecodeError, JWT::ExpiredSignature
-        nil
-      end
-
     return unauthorized! if payload_opts.nil?
 
     user_info = payload_opts[0]
@@ -42,8 +35,23 @@ class ApplicationController < ActionController::API
     forbidden! unless @current_user&.role && @current_user.role != "admin"
   end
 
+  def optional_login
+    return if payload_opts.nil?
+
+    user_info = payload_opts[0]
+    @current_user = User.find_by(email: user_info["email"])
+  end
+
   def access_header
     "HTTP_X_ACCESS_TOKEN"
+  end
+
+  def payload_opts
+    begin
+      JwtToken::JwtToken.decode(request.headers[access_header])
+    rescue JWT::DecodeError, JWT::ExpiredSignature
+      nil
+    end
   end
 
   def render_resource(resource, status = :ok)
