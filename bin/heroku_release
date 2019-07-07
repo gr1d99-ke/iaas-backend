@@ -12,4 +12,7 @@ end
 chdir APP_ROOT do
   puts "\n== Running migrations =="
   system! 'bin/rails db:migrate'
+
+  puts "\n== Seeding data =="
+  system! 'bin/rails db:seed'
 end
