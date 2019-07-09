@@ -85,6 +85,8 @@ class OpeningsController < ApplicationController
   end
 
   def current_user_or_model
-    @current_user&.openings || Opening
+    return @current_user&.openings if @current_user
+
+    Opening
   end
 end
