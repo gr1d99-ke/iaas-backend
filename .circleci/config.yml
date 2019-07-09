@@ -108,7 +108,7 @@ jobs:
     - run:
         name: Deploy to staging
         command: |
-          git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git staging:master --force
+          git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git master:master --force
 
 workflows:
   version: 2
@@ -123,4 +123,4 @@ workflows:
         - tests
         filters:
           branches:
-            only: staging
+            only: master

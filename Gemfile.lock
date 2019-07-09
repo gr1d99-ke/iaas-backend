@@ -170,6 +170,25 @@ GEM
     rb-inotify (0.10.0)
       ffi (~> 1.0)
     rb-readline (0.5.5)
+    redis (4.1.2)
+    redis-actionpack (5.0.2)
+      actionpack (>= 4.0, < 6)
+      redis-rack (>= 1, < 3)
+      redis-store (>= 1.1.0, < 2)
+    redis-activesupport (5.0.7)
+      activesupport (>= 3, < 6)
+      redis-store (>= 1.3, < 2)
+    redis-namespace (1.6.0)
+      redis (>= 3.0.4)
+    redis-rack (2.0.5)
+      rack (>= 1.5, < 3)
+      redis-store (>= 1.2, < 2)
+    redis-rails (5.0.2)
+      redis-actionpack (>= 5.0, < 6)
+      redis-activesupport (>= 5.0, < 6)
+      redis-store (>= 1.2, < 2)
+    redis-store (1.6.0)
+      redis (>= 2.2, < 5)
     rspec (3.8.0)
       rspec-core (~> 3.8.0)
       rspec-expectations (~> 3.8.0)
@@ -259,6 +278,9 @@ DEPENDENCIES
   rack-cors
   rails (~> 5.2.2)
   rb-readline
+  redis
+  redis-namespace
+  redis-rails
   rspec-rails
   rubocop
   shoulda-matchers

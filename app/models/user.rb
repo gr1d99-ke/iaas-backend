@@ -14,4 +14,8 @@ class User < ActiveRecord::Base
   validates :email, 'valid_email_2/email': { message: I18n.t("errors.users.email.invalid") }
 
   validates :password, presence: { on: :create, message: I18n.t("errors.users.password.presence") }
+
+  after_commit do
+    RedisService.del("openings")
+  end
 end

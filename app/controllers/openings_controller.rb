@@ -8,8 +8,16 @@ class OpeningsController < ApplicationController
 
   def index
     page, per_page = pagination_params
-    openings       = current_user_or_model.order(created_at: 'desc').paginate(page: page, per_page: per_page)
-    render json: openings, meta: pagination_dict(openings)
+    openings = RedisService.get("openings")
+
+    if openings.nil?
+      openings = current_user_or_model.order(created_at: 'desc').to_json
+      RedisService.set("openings", openings)
+    end
+    openings = JSON.parse(openings)
+    openings = openings.paginate(page: page, per_page: per_page)
+
+    render json: openings, each_serializer: OpeningSerializer, meta: pagination_dict(openings)
   end
 
   def create

@@ -95,7 +95,7 @@ RSpec.describe "Openings", type: :request do
 
   describe "GET /openings/:id" do
     context "when opening exists" do
-      let(:opening) { build_stubbed(:opening) }
+      let(:opening) { create(:opening) }
 
       before { expect(Opening).to receive(:find_by).with(id: opening.id.to_s) { opening } }
 
