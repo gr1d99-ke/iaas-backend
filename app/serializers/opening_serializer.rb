@@ -14,21 +14,10 @@ class OpeningSerializer < ActiveModel::Serializer
 
 
   attribute :open do
-    object["end_date"].to_date >= object["start_date"].to_date
+    object.end_date >= object.start_date
   end
 
-  def start_date
-    object.start_date.to_date
-  end
-
-  def end_date
-    object.end_date.to_date
-  end
-
-  belongs_to :user do
-    user_id = object[:user_id.to_s]
-    User.find(user_id) if user_id
-  end
+  belongs_to :user
 
   has_many :applications
 

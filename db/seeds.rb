@@ -12,12 +12,15 @@ require "faker"
 admin_role = Role.find_or_create_by(name: "admin")
 
 # check if user exists
-admin_email = "admin@email.com"
+admin_1_email = "admin@email.com"
+admin_2_email = "admin2@email.com"
 non_admin_email = "non-admin@email.com"
-admin = User.find_by(email: admin_email)
+admin_1 = User.find_by(email: admin_1_email)
+admin_2 = User.find_by(email: admin_2_email)
 non_admin = User.find_by(email: non_admin_email)
 
-User.create(email: "admin@email.com", password: "password", role: admin_role) unless admin
+User.create(email: admin_1_email, password: "password", role: admin_role) unless admin_1
+User.create(email: admin_2_email, password: "password", role: admin_role) unless admin_2
 User.create(email: "non-admin@email.com", password: "password") unless non_admin
 
 # open Openings
@@ -36,7 +39,7 @@ User.create(email: "non-admin@email.com", password: "password") unless non_admin
       company: Faker::Company.unique.name,
       description: Faker::Lorem.unique.sentence,
       qualifications: Faker::Lorem.unique.paragraphs(2),
-      user: admin
+      user: admin_1
   )
 
   if i < 2

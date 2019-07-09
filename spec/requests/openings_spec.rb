@@ -54,7 +54,24 @@ RSpec.describe "Openings", type: :request do
   end
 
   describe "GET /openings" do
-    context "when albums exists" do
+    context "when openings exists" do
+      context "when user is admin" do
+        let(:admin)       { FactoryBot.create(:admin) }
+        let(:other_admin) { FactoryBot.create(:admin, email: Faker::Internet.email) }
+
+        before do
+          FactoryBot.create_list(:opening, 5, user: admin)
+          FactoryBot.create_list(:opening, 5, user: other_admin)
+          stub_user(admin)
+        end
+
+        it "shows openings created by the current logged in admin" do
+          WillPaginate.per_page = 20
+          get openings_path
+          expect(json_response[:data].size).to eq(5)
+        end
+      end
+
       specify do
         get openings_path
         expect(response).to have_http_status(200)

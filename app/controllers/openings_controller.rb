@@ -3,20 +3,13 @@ require "will_paginate/array"
 
 class OpeningsController < ApplicationController
   before_action :must_be_logged_in!, only: %i[create update destroy]
-  before_action :must_be_admin!, only: %i[create update destroy]
+  before_action :optional_login,     only: %i[index]
+  before_action :must_be_admin!,     only: %i[create update destroy]
 
   def index
     page, per_page = pagination_params
-    openings = RedisService.get("openings")
-    if openings.nil?
-      openings = Opening.order(created_at: 'desc').to_json
-      RedisService.set("openings", openings)
-    end
-
-    openings = JSON.parse(openings)
-    openings = openings.paginate(page: page, per_page: per_page)
-
-    render json: openings, each_serializer: OpeningSerializer, meta: pagination_dict(openings)
+    openings       = current_user_or_model.order(created_at: 'desc').paginate(page: page, per_page: per_page)
+    render json: openings, meta: pagination_dict(openings)
   end
 
   def create
@@ -89,5 +82,11 @@ class OpeningsController < ApplicationController
     page             = params[:page] && params[:page][:number] || 1
     per_page         = params[:page] && params[:page][:size] || WillPaginate.per_page
     [page, per_page]
+  end
+
+  def current_user_or_model
+    return @current_user&.openings if @current_user
+
+    Opening
   end
 end
