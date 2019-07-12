@@ -10,7 +10,7 @@ class OpeningsController < ApplicationController
     page, per_page = pagination_params
     openings = RedisService.get(openings_key)
 
-    if openings.nil?
+    if openings.nil? || openings == "[]"
       openings = current_user_or_model.order(created_at: 'desc').to_json
       RedisService.set(openings_key, openings)
     end
@@ -99,7 +99,7 @@ class OpeningsController < ApplicationController
   end
 
   def openings_key
-    return "openings:#{@current_user.email.split("@")[0]}" if @current_user
+    return "openings:#{@current_user.email.split("@")[0]}" if @current_user&.admin?
 
     "openings:all"
   end

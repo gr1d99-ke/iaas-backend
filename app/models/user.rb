@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class User < ActiveRecord::Base
+  ADMIN_ROLE_NAME = "admin"
+
   has_secure_password validations: false
 
   belongs_to :role,
@@ -18,5 +20,9 @@ class User < ActiveRecord::Base
   after_commit do
     keys = RedisService.keys("openings*")
     RedisService.del(keys)
+  end
+
+  def admin?
+    role&.name == ADMIN_ROLE_NAME
   end
 end
