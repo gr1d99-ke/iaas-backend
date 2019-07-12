@@ -24,6 +24,7 @@ class Opening < ApplicationRecord
             valid_end_date: { message: I18n.t("errors.openings.end_date.invalid") }
 
   after_commit do
-    RedisService.del("openings")
+    keys = RedisService.keys("openings*")
+    RedisService.del(keys)
   end
 end

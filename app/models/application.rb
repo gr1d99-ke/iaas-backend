@@ -17,4 +17,9 @@ class Application < ApplicationRecord
   validates :applicant, presence: { message: I18n.t("errors.application.applicant.presence") }
   validates :cover_letter, presence: { message: I18n.t("errors.application.cover_letter.presence") }
   validates :resume, presence: { message: I18n.t("errors.application.resume.presence") }
+
+  after_commit do
+    keys = RedisService.keys("openings*")
+    RedisService.del(keys)
+  end
 end

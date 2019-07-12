@@ -8,11 +8,11 @@ class OpeningsController < ApplicationController
 
   def index
     page, per_page = pagination_params
-    openings = RedisService.get("openings")
+    openings = RedisService.get(openings_key)
 
     if openings.nil?
       openings = current_user_or_model.order(created_at: 'desc').to_json
-      RedisService.set("openings", openings)
+      RedisService.set(openings_key, openings)
     end
     openings = JSON.parse(openings)
     openings = openings.paginate(page: page, per_page: per_page)
@@ -96,5 +96,11 @@ class OpeningsController < ApplicationController
     return @current_user&.openings if @current_user
 
     Opening
+  end
+
+  def openings_key
+    return "openings:#{@current_user.email.split("@")[0]}" if @current_user
+
+    "openings:all"
   end
 end

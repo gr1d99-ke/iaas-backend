@@ -13,7 +13,12 @@ module RedisService
     current.set(key, value)
   end
 
-  def del(*keys)
+  def del(keys)
+    keys = "" if keys.blank?
     current.del(keys)
+  end
+
+  def keys(pattern = "*")
+    current.keys(pattern)
   end
 end

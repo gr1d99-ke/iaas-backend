@@ -16,6 +16,7 @@ class User < ActiveRecord::Base
   validates :password, presence: { on: :create, message: I18n.t("errors.users.password.presence") }
 
   after_commit do
-    RedisService.del("openings")
+    keys = RedisService.keys("openings*")
+    RedisService.del(keys)
   end
 end

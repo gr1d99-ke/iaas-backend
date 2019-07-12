@@ -73,6 +73,7 @@ RSpec.describe "Openings", type: :request do
       end
 
       specify do
+
         get openings_path
         expect(response).to have_http_status(200)
       end
