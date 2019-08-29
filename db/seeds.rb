@@ -37,8 +37,8 @@ User.create(email: "non-admin@email.com", password: "password") unless non_admin
       end_date: end_date,
       location: Faker::Address.unique.city,
       company: Faker::Company.unique.name,
-      description: Faker::Lorem.unique.sentence,
-      qualifications: Faker::Lorem.unique.paragraphs(2),
+      description: Faker::Lorem.unique.sentence(200),
+      qualifications: Faker::Lorem.unique.paragraphs(4),
       user: admin_1
   )
 
