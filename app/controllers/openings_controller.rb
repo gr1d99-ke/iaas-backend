@@ -14,6 +14,7 @@ class OpeningsController < ApplicationController
       openings = current_user_or_model.order(created_at: 'desc').to_json
       RedisService.set(openings_key, openings)
     end
+
     openings = JSON.parse(openings)
     openings = openings.paginate(page: page, per_page: per_page)
 
@@ -93,6 +94,8 @@ class OpeningsController < ApplicationController
   end
 
   def current_user_or_model
+    return Opening if @current_user&.role.blank?
+
     return @current_user&.openings if @current_user
 
     Opening

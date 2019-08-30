@@ -3,6 +3,10 @@
 require "rails_helper"
 
 RSpec.describe "Openings", type: :request do
+  after(:each) do
+    Faker::UniqueGenerator.clear
+  end
+
   describe "POST /openings" do
     context "when user is admin" do
       let(:admin) { create(:admin) }
@@ -72,8 +76,23 @@ RSpec.describe "Openings", type: :request do
         end
       end
 
-      specify do
+      context "when user is not an admin" do
+        let!(:openings) { FactoryBot.create_list(:opening, 10) }
+        let(:user) { FactoryBot.create(:user) }
 
+        before do
+          WillPaginate.per_page = 10
+          stub_user(user)
+        end
+
+        it "returns all openings" do
+          get openings_path
+          expect(json_response[:data].blank?).not_to be_truthy
+          expect(json_response[:data].size).to be(10)
+        end
+      end
+
+      specify do
         get openings_path
         expect(response).to have_http_status(200)
       end
