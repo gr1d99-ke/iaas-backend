@@ -58,21 +58,21 @@ class ApplicationController < ActionController::API
     render json: resource, status: status
   end
 
-  def invalid_credentials!
+  def invalid_credentials!(resource)
     render json: {
       status: I18n.t("errors.unauthorized.status"),
       title: I18n.t("errors.unauthorized.title"),
       detail: I18n.t("errors.unauthorized.detail"),
-      errors: [I18n.t("errors.invalid_credentials.error_message")]
+      errors: resource.errors
     }, status: :unauthorized
   end
 
   def unauthorized!
     render json: {
-        status: I18n.t("errors.unauthorized.status"),
-        title: I18n.t("errors.unauthorized.title"),
-        detail: I18n.t("errors.unauthorized.detail"),
-        errors: [I18n.t("errors.unauthorized.error_message")]
+      status: I18n.t("errors.unauthorized.status"),
+      title: I18n.t("errors.unauthorized.title"),
+      detail: I18n.t("errors.unauthorized.detail"),
+      errors: [I18n.t("errors.unauthorized.error_message")]
     }, status: :unauthorized
   end
 
@@ -96,10 +96,10 @@ class ApplicationController < ActionController::API
 
   def resource_invalid!(resource)
     render json: {
-        status: I18n.t("errors.unprocessable_entity.status"),
-        title: I18n.t("errors.unprocessable_entity.title"),
-        detail: I18n.t("errors.unprocessable_entity.detail"),
-        errors: resource.errors
+      status: I18n.t("errors.unprocessable_entity.status"),
+      title: I18n.t("errors.unprocessable_entity.title"),
+      detail: I18n.t("errors.unprocessable_entity.detail"),
+      errors: resource.errors
     }, status: :unprocessable_entity
   end
 

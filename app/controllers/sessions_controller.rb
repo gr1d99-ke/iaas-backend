@@ -1,11 +1,14 @@
 class SessionsController < ApplicationController
   def create
-    @user = User.find_by_email(session_params[:email])&.authenticate(session_params[:password])
+    service = UserSessionService.call(session_params)
+
+    @user = service.user
+
     if @user
       provide_token
       render_resource(@user)
     else
-      unauthorized!
+      invalid_credentials!(service)
     end
   end
 

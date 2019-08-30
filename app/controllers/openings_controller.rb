@@ -96,9 +96,7 @@ class OpeningsController < ApplicationController
   def current_user_or_model
     return Opening if @current_user&.role.blank?
 
-    return @current_user&.openings if @current_user
-
-    Opening
+    @current_user&.openings if @current_user
   end
 
   def openings_key

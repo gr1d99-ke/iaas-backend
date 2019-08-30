@@ -22,7 +22,7 @@ RSpec.describe "Sessions", type: :request do
     context "when email is not registered" do
       it "returns error message" do
         post sessions_path, params: { session: { email: "user@domain.com", password: "1234" } }
-        expect(json_response[:errors]).to include(I18n.t("errors.unauthorized.error_message"))
+        expect(json_response[:errors].values.flatten).to include(I18n.t("errors.invalid_credentials.error_message"))
       end
 
       specify do
