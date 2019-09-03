@@ -18,6 +18,14 @@ class OpeningSerializer < ActiveModel::Serializer
     object["end_date"].to_date >= object["start_date"].to_date
   end
 
+  attribute :start_date do
+    object["start_date"].to_date
+  end
+
+  attribute :end_date do
+    object["end_date"].to_date
+  end
+
   belongs_to :user do
     user_id = object[:user_id.to_s]
     User.find(user_id) if user_id
