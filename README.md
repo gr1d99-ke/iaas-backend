@@ -6,3 +6,9 @@ Heroku: [https://iaas-backend-staging.herokuapp.com](https://iaas-backend-stagin
 
 
 **Note:** redis caching is not available in this staging branch, it is only available in the master branch.
+
+
+## Setup
+
+### Required environment Variables
+1. DATABASE HOST

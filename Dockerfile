@@ -1,0 +1,15 @@
+FROM ruby:2.5
+
+RUN bundle config --global frozen 1
+
+WORKDIR /usr/src/app
+
+COPY Gemfile Gemfile.lock ./
+
+RUN gem install bundler
+
+RUN bundle install
+
+COPY . .
+
+ENTRYPOINT ["./entrypoint.sh"]

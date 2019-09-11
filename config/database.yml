@@ -20,6 +20,9 @@ default: &default
   # For details on connection pooling, see Rails configuration guide
   # http://guides.rubyonrails.org/configuring.html#database-pooling
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  host: <%= Rails.application.credentials.DATABASE[:host] %>
+  username: <%= Rails.application.credentials.DATABASE[:user] %>
+  password: <%= Rails.application.credentials.DATABASE[:password] %>
 
 development:
   <<: *default
@@ -81,5 +84,3 @@ test:
 production:
   <<: *default
   database: iaps-backend_production
-  username: iaps-backend
-  password: <%= ENV['IAPS-BACKEND_DATABASE_PASSWORD'] %>
