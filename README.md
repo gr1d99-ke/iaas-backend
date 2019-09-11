@@ -34,3 +34,4 @@ Heroku: [https://iaas-backend-staging.herokuapp.com](https://iaas-backend-stagin
 1. Create an empty file named `.env.test.local` and copy the contents of `.env.test.local.example` to the new file you just created.
 2. Update variables in `.env.test.local` with real values.
 3. Run `bundle exec rspec`
+
