@@ -4,4 +4,3 @@
 rm -f /app/tmp/pids/server.pid
 
 exec "$@"
-
