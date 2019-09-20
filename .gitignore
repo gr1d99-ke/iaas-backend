@@ -27,3 +27,9 @@ public/uploads/
 
 
 dump.rdb
+
+# docker
+.docker-dev.env
+.env.development.local
+.env.test.local
+

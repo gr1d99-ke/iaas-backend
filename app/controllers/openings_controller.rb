@@ -68,23 +68,11 @@ class OpeningsController < ApplicationController
   private
 
   def new_opening_params
-    params.require(:opening).permit(:title,
-                                     :company,
-                                     :location,
-                                     :description,
-                                     :qualifications,
-                                     :start_date,
-                                     :end_date).reverse_merge!(user_id: @current_user.id)
+    params.require(:opening).permit(:title, :company, :location, :description, :qualifications, :start_date, :end_date).reverse_merge!(user_id: @current_user.id)
   end
 
   def update_opening_params
-    params.require(:opening).permit(:title,
-                                     :company,
-                                     :location,
-                                     :description,
-                                     :qualifications,
-                                     :start_date,
-                                     :end_date)
+    params.require(:opening).permit(:title, :company, :location, :description, :qualifications, :start_date, :end_date)
   end
 
   def pagination_params
