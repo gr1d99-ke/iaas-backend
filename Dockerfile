@@ -18,8 +18,6 @@ ENV BUNDLER_VERSION 2.0.1
 
 RUN bundle install
 
-RUN pwd
-
 COPY . .
 
 COPY entrypoint.sh /usr/bin
