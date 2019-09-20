@@ -8,7 +8,7 @@ redis = if Rails.env.production?
 
           MockRedis.new
         else
-          Redis.new(:url => Rails.application.credentials.REDIS_URL)
+          Redis.new(:url => ENV.fetch("REDIS_URL"))
         end
 
 Redis.current = Redis::Namespace.new(APP_REDIS_NAMESPACE, redis: redis)
