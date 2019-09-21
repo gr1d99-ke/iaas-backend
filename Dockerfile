@@ -1,6 +1,6 @@
 FROM ruby:2.5.1-alpine
 
-RUN apk update && apk upgrade && apk add --no-cache build-base postgresql-dev bash tzdata ncurses file
+RUN apk update && apk upgrade && apk add --no-cache build-base postgresql-dev bash tzdata ncurses file less
 
 RUN bundle config --global frozen 1
 

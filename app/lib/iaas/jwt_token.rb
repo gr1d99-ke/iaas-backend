@@ -1,4 +1,4 @@
-module JwtToken
+module Iaas
   class JwtToken
     ALGORITHM = "HS256".freeze
     SECRET = Rails.application.credentials.secret_key_base
@@ -7,22 +7,17 @@ module JwtToken
       def encode(payload)
         payload = add_claims(payload)
 
-        JWT.encode(payload,
-                   JwtToken::SECRET,
-                   JwtToken::ALGORITHM)
+        JWT.encode(payload, JwtToken::SECRET, JwtToken::ALGORITHM)
       end
 
       def decode(token)
-        JWT.decode(token,
-                   JwtToken::SECRET,
-                   true,
-                   algorithm: JwtToken::ALGORITHM)
+        JWT.decode(token, JwtToken::SECRET, true, algorithm: JwtToken::ALGORITHM)
       end
 
       private
 
       def add_claims(payload)
-        exp           = Time.zone.now.to_i + 36_000
+        exp = Time.zone.now.to_i + 36_000
         payload[:exp] = exp
         payload
       end

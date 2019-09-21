@@ -2,7 +2,7 @@ class ApplicationController < ActionController::API
   around_action :init_time_zone
   before_action :set_locale
 
-  include Errors::ErrorHandler
+  include Iaas::Errors::ErrorHandler
 
   private
 
@@ -15,8 +15,8 @@ class ApplicationController < ActionController::API
   end
 
   def generate_auth_token(user)
-    payload = { email: user.email, role: user.role&.name }
-    JwtToken::JwtToken.encode(payload)
+    payload = { id: user.id, email: user.email, role: user.role&.name }
+    Iaas::JwtToken.encode(payload)
   end
 
   def attach_auth_token(token)
@@ -48,7 +48,7 @@ class ApplicationController < ActionController::API
 
   def payload_opts
     begin
-      JwtToken::JwtToken.decode(request.headers[access_header])
+      Iaas::JwtToken.decode(request.headers[access_header])
     rescue JWT::DecodeError, JWT::ExpiredSignature
       nil
     end
