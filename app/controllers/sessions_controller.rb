@@ -1,14 +1,12 @@
 class SessionsController < ApplicationController
   def create
-    service = UserSessionService.call(session_params)
+    @result = UserSessionService.call(session_params)
 
-    @user = service.user
-
-    if @user
+    if @result.user
       provide_token
-      render_resource(@user)
+      render_resource(@result.user)
     else
-      invalid_credentials!(service)
+      invalid_credentials!(@result)
     end
   end
 
@@ -19,7 +17,7 @@ class SessionsController < ApplicationController
   end
 
   def provide_token
-    token = generate_auth_token(@user)
+    token = generate_auth_token(@result.user)
     attach_auth_token(token)
   end
 end
