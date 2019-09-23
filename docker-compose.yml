@@ -13,7 +13,8 @@ services:
     depends_on:
       - db
       - redis
-
+    tty: true
+    stdin_open: true
 
   db:
     image: postgres:11.5-alpine
