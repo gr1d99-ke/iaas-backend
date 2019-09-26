@@ -1,4 +1,4 @@
-class UserSessionService
+class SignInSession
   include ActiveModel::Model
   include ActiveModel::Validations
   include ActiveModel::Callbacks

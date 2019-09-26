@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe JwtToken::JwtToken do
+RSpec.describe Iaas::JwtToken do
   let(:email) { "gideon@gmail.com" }
   let(:payload) { { email: email } }
 
