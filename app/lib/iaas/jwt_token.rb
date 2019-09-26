@@ -1,5 +1,5 @@
 module Iaas
-  class JwtToken
+  module JwtToken
     ALGORITHM = "HS256".freeze
     SECRET = Rails.application.credentials.secret_key_base
 

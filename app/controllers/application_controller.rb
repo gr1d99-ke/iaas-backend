@@ -92,8 +92,23 @@ class ApplicationController < ActionController::API
     end
   end
 
-  include Iaas::Errors::ErrorHandler
+  module ApplicationErrorHandler
+    extend ActiveSupport::Concern
+
+    included do
+      rescue_from(ActionController::ParameterMissing) do |parameter_missing_exception|
+        param = parameter_missing_exception.param
+        message = I18n.t("errors.parameter_missing.error_message")
+        error = [
+            { "#{param}": [message] }
+        ]
+        parameter_missing!(error)
+      end
+    end
+  end
+
   include ApplicationFilterMethods
+  include ApplicationErrorHandler
   include AuthenticationMethods
   include AuthenticationFilterMethods
   include RenderMethods
