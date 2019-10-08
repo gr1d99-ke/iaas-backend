@@ -1,30 +1,18 @@
 # frozen_string_literal: true
 
 class Opening < ApplicationRecord
-  belongs_to :user,
-             required: false
+  include RemoveOpeningsInCacheConcern
+
+  belongs_to :user, required: false
 
   has_many :applications
 
-  validates :title,
-            presence: { message: I18n.t("errors.openings.title.presence") }
-  validates :company,
-            presence: { message: I18n.t("errors.openings.company.presence") }
-  validates :location,
-            presence: { message: I18n.t("errors.openings.location.presence") }
-  validates :description,
-            presence: { message: I18n.t("errors.openings.description.presence") }
-  validates :qualifications,
-            presence: { message: I18n.t("errors.openings.qualifications.presence") }
-  validates :start_date,
-            presence: { message: I18n.t("errors.openings.start_date.presence") }
-  validates :end_date,
-            presence: { message: I18n.t("errors.openings.end_date.presence") }
-  validates :end_date,
-            valid_end_date: { message: I18n.t("errors.openings.end_date.invalid") }
-
-  after_commit do
-    keys = RedisService.keys("openings*")
-    RedisService.del(keys)
-  end
+  validates :title, presence: { message: I18n.t("errors.openings.title.presence") }
+  validates :company, presence: { message: I18n.t("errors.openings.company.presence") }
+  validates :location, presence: { message: I18n.t("errors.openings.location.presence") }
+  validates :description, presence: { message: I18n.t("errors.openings.description.presence") }
+  validates :qualifications, presence: { message: I18n.t("errors.openings.qualifications.presence") }
+  validates :start_date, presence: { message: I18n.t("errors.openings.start_date.presence") }
+  validates :end_date, presence: { message: I18n.t("errors.openings.end_date.presence") }
+  validates :end_date, valid_end_date: { message: I18n.t("errors.openings.end_date.invalid") }
 end
