@@ -1,10 +1,10 @@
 class UsersController < ApplicationController
   def create
-    @user = User.create(user_params)
+    @user = User.new(user_params)
 
     if @user.valid?
-      token = generate_auth_token(@user)
-      attach_auth_token(token)
+      @user.save
+      provide_token_for(@user)
       render_resource(@user, :created)
     else
       resource_invalid!(@user)

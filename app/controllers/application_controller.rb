@@ -18,6 +18,11 @@ class ApplicationController < ActionController::API
     def attach_auth_token(token)
       response.set_header("X-Access-Token", token)
     end
+
+    def provide_token_for(user)
+      token = generate_auth_token(user)
+      attach_auth_token(token)
+    end
   end
 
   module AuthenticationFilterMethods
