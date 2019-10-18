@@ -1,9 +1,5 @@
 class ApplicationController < ActionController::API
   module ApplicationFilterMethods
-    def init_time_zone(&block)
-      Time.use_zone('Africa/Nairobi', &block)
-    end
-
     def set_locale
       I18n.locale = params[:locale] || I18n.default_locale
     end
@@ -12,7 +8,7 @@ class ApplicationController < ActionController::API
   module AuthenticationMethods
     def generate_auth_token(user)
       payload = { id: user.id, email: user.email, role: user.role&.name }
-      Iaas::JwtToken.encode(payload)
+      Gr1d99Auth::JWT.encode(payload)
     end
 
     def attach_auth_token(token)
@@ -118,7 +114,7 @@ class ApplicationController < ActionController::API
   include AuthenticationFilterMethods
   include RenderMethods
 
-  around_action :init_time_zone
+  # around_action :init_time_zone
   before_action :set_locale
 
   private
@@ -129,7 +125,7 @@ class ApplicationController < ActionController::API
 
   def payload_opts
     begin
-      Iaas::JwtToken.decode(request.headers[access_header])
+      Gr1d99Auth::JWT.decode(request.headers[access_header])
     rescue JWT::DecodeError, JWT::ExpiredSignature
       nil
     end

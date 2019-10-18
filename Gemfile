@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 source 'https://rubygems.org'
-git_source(:github) { |repo| "https://github.com/#{repo}.git" }
+git_source(:github) { |repo| 'https://github.com/#{repo}.git' }
 
 ruby '2.5.1'
 
@@ -25,6 +25,9 @@ gem 'rb-readline'
 gem 'shrine'
 gem 'valid_email2'
 
+# custom jwt gem
+gem 'gr1d99_auth', git: 'https://github.com/gr1d99-ke/gr1d99_auth.git'
+
 group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'dotenv-rails'
@@ -45,7 +48,6 @@ end
 group :test do
   gem 'shoulda-matchers'
   gem 'simplecov', require: false
-  gem 'timecop'
   gem 'shrine-memory'
 end
 
